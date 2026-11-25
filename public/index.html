@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>지휘지원 연구 현황판</title>
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="top-text">
+      <p class="eyebrow">연구 추진 현황</p>
+      <h1>무전 문자화·지휘지원·훈련 검증 연구</h1>
+      <p class="lede">세 연구그룹이 지금 어느 단계에 있는지 보고, 단계마다 글·질문·답변을 남기는 현황판입니다.</p>
+    </div>
+    <section class="summary" aria-label="전체 진행도">
+      <div class="stats">
+        <span class="stat"><b id="n-done">0</b>완료</span>
+        <span class="stat cur"><b id="n-current">0</b>진행 중</span>
+        <span class="stat"><b id="n-todo">0</b>예정</span>
+        <span class="stat" id="n-total"></span>
+      </div>
+      <div class="bar" id="bar" aria-hidden="true"></div>
+      <div class="sum-foot">
+        <span id="basis">발표자료 기준 초기 상태</span>
+        <button type="button" class="wait-btn" id="wait-btn">답변 대기 질문 0건</button>
+      </div>
+    </section>
+  </header>
+
+  <section class="flow" aria-label="연구 흐름">
+    <ol>
+      <li><span>1그룹</span>무전 문자화</li>
+      <li><span>2그룹</span>AI 지휘지원</li>
+      <li><span>3그룹</span>훈련·효과 검증</li>
+    </ol>
+    <ul class="legend" aria-label="범례">
+      <li><i class="dot done"></i>완료</li>
+      <li><i class="dot current"></i>현재</li>
+      <li><i class="dot"></i>예정</li>
+    </ul>
+  </section>
+
+  <section class="board" id="board" aria-label="그룹별 진행 단계"></section>
+
+  <dialog id="stage-dialog" aria-labelledby="p-title">
+  <div class="dialog-heading"><span>단계별 글 · 질문 · 답변</span><button class="btn" id="dialog-close" type="button" autofocus>닫기 ×</button></div>
+  <section class="panel" id="panel" aria-label="단계별 기록">
+    <div class="panel-head">
+      <div>
+        <p class="eyebrow" id="p-path"></p>
+        <h2 id="p-title"></h2>
+        <p class="muted" id="p-note"></p>
+      </div>
+      <div class="status-col">
+        <div class="status-box"><span>진행 상태</span>
+          <div class="seg" id="status-edit" role="group" aria-label="진행 상태 바꾸기">
+            <button type="button" data-status="done">완료</button>
+            <button type="button" data-status="current">현재</button>
+            <button type="button" data-status="todo">예정</button>
+          </div>
+          <button type="button" class="btn primary" id="advance-btn" hidden>완료하고 다음 단계로</button>
+        </div>
+        <p class="muted" id="status-msg" role="status"></p>
+      </div>
+    </div>
+
+    <section id="analysis-link" class="notice" hidden aria-label="샘플 검수 진행률">
+      <a href="https://mortality-receivers-police-luis.trycloudflare.com/" target="_blank" rel="noopener noreferrer">샘플 분석 · 무전 검수 사이트 열기 ↗</a>
+      <p id="analysis-progress" role="status">검수 진행률 확인 중</p>
+      <progress id="analysis-bar" max="100" value="0" hidden aria-label="검수 진행률"></progress>
+      <p id="analysis-updated" class="muted">30초마다 자동 갱신</p>
+    </section>
+    <div class="panel-grid">
+      <div class="thread">
+        <div class="toolbar">
+          <div class="seg" id="scope-seg" role="group" aria-label="보는 범위">
+            <button type="button" data-scope="stage">이 단계</button>
+            <button type="button" data-scope="all">전체 단계</button>
+          </div>
+          <div class="seg" id="kind-seg" role="group" aria-label="종류">
+            <button type="button" data-kind="all">전체</button>
+            <button type="button" data-kind="note">글</button>
+            <button type="button" data-kind="question">질문</button>
+          </div>
+        </div>
+        <p class="notice" id="notice" hidden></p>
+        <p class="empty" id="empty" hidden></p>
+        <div class="posts" id="posts"></div>
+      </div>
+
+      <form class="composer" id="composer" autocomplete="off" hidden>
+        <h3 id="composer-title">이 단계에 남기기</h3>
+        <div class="seg" id="new-kind" role="group" aria-label="남길 종류">
+          <button type="button" data-newkind="note">글</button>
+          <button type="button" data-newkind="question">질문</button>
+        </div>
+        <label for="post-body"><span id="body-label">내용</span>
+          <textarea id="post-body" rows="5" maxlength="5000"></textarea>
+        </label>
+        <label for="nick">이름
+          <input type="text" id="nick" maxlength="30" placeholder="예: 홍길동">
+        </label>
+        <div class="composer-row">
+          <span class="form-msg" id="form-msg" role="status"></span>
+          <button type="submit" class="btn primary" id="post-btn">글 남기기</button>
+        </div>
+      </form>
+
+      <aside class="waiting" aria-label="답변을 기다리는 질문">
+        <h3>답변을 기다리는 질문</h3>
+        <p class="muted" id="wait-empty">답변을 기다리는 질문이 없습니다.</p>
+        <ul class="wait-list" id="wait-list"></ul>
+      </aside>
+    </div>
+  </section>
+  <div class="dialog-footer"><button class="btn primary" id="compose-toggle" type="button" aria-expanded="false" aria-controls="composer">글·질문 남기기</button></div>
+  </dialog>
+</div>
+
+<script src="/app.js"></script>
+</body>
+</html>

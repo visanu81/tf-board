@@ -1,0 +1,20 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  // 주소: https://tf.visanu81.workers.dev
+  "name": "tf",
+  "main": "src/worker.js",
+  "compatibility_date": "2026-11-01",
+  "workers_dev": true,
+  "preview_urls": false,
+  // 페이지 파일(화면). /api/ 로 시작하지 않는 요청은 여기서 나간다.
+  "assets": { "directory": "./public" },
+  // 글·질문·답변·진행 상태 저장소
+  "d1_databases": [
+    { "binding": "DB", "database_name": "tf-board", "database_id": "df72ee47-9a23-4762-9d4a-c3dc7fbf7134", "migrations_dir": "./migrations" }
+  ],
+  // 한 사람이 1분에 저장할 수 있는 횟수 제한(도배 방지)
+  "ratelimits": [
+    { "name": "WRITE_LIMIT", "namespace_id": "4117", "simple": { "limit": 30, "period": 60 } }
+  ],
+  "observability": { "enabled": true }
+}
